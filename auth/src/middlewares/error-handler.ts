@@ -11,6 +11,6 @@ export const errorHandler = (
 
   // will inspect err to customize the message later
   res.status(400).send({
-    message: "Something went wrong!",
+    message: err.message,
   });
 };
