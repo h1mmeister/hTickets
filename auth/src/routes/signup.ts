@@ -23,7 +23,7 @@ router.post(
     }
 
     const { email, password } = req.body;
-    res.send({});
+    // res.send({});
   }
 );
 
