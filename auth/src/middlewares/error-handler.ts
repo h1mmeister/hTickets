@@ -11,7 +11,12 @@ export const errorHandler = (
   next: NextFunction
 ) => {
   if (err instanceof RequestValidationError) {
-    console.log("Handling this error as a request validation error");
+    // console.log("Handling this error as a request validation error");
+
+    // for matting the errors in a common format
+    const formattedError = err.errors.map((error) => {
+      return { message: error.msg, field: error.param };
+    });
   }
 
   if (err instanceof DatabaseConnectionError) {
