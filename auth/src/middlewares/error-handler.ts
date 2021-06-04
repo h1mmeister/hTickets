@@ -13,18 +13,20 @@ export const errorHandler = (
   if (err instanceof RequestValidationError) {
     // console.log("Handling this error as a request validation error");
 
-    // for matting the errors in a common format
-    const formattedError = err.errors.map((error) => {
+    // formatting the errors in a common format
+    const formattedErrors = err.errors.map((error) => {
       return { message: error.msg, field: error.param };
     });
+    return res.status(400).send({ errors: formattedErrors });
   }
 
   if (err instanceof DatabaseConnectionError) {
-    console.log("Handling this error as a Database connection error");
+    // console.log("Handling this error as a Database connection error");
+    return res.status(500).send({ errors: [{ message: err.reason }] });
   }
 
   // will inspect err to customize the message later
   res.status(400).send({
-    message: err.message,
+    errors: [{ message: "Something went worng!" }],
   });
 };
