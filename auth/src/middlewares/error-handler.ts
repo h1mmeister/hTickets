@@ -14,15 +14,15 @@ export const errorHandler = (
     // console.log("Handling this error as a request validation error");
 
     // formatting the errors in a common format
-    const formattedErrors = err.errors.map((error) => {
-      return { message: error.msg, field: error.param };
-    });
-    return res.status(400).send({ errors: formattedErrors });
+    // const formattedErrors = err.errors.map((error) => {
+    //   return { message: error.msg, field: error.param };
+    // });
+    return res.status(err.statusCode).send({ errors: err.serializeErrors() });
   }
 
   if (err instanceof DatabaseConnectionError) {
     // console.log("Handling this error as a Database connection error");
-    return res.status(500).send({ errors: [{ message: err.reason }] });
+    return res.status(err.statusCode).send({ errors: err.serializeErrors() });
   }
 
   // will inspect err to customize the message later
