@@ -7,6 +7,7 @@ import { signOutRouter } from "./routes/signout";
 import { signUpRouter } from "./routes/signup";
 
 import { errorHandler } from "./middlewares/error-handler";
+import { NotFoundError } from "./errors/not-found-error";
 
 const app = express();
 app.use(json());
@@ -15,6 +16,11 @@ app.use(currentUserRouter);
 app.use(signInRouter);
 app.use(signOutRouter);
 app.use(signUpRouter);
+
+// check for all the routes whih are not defined and throw not found error
+app.all("*", () => {
+  throw new NotFoundError();
+});
 
 app.use(errorHandler);
 
