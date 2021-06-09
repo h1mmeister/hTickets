@@ -1,5 +1,11 @@
 import mongoose from "mongoose";
 
+// describes the properties of User
+interface UserAttrs {
+  email: string;
+  password: string;
+}
+
 // we are creating the schema for the model class
 const userSchema = new mongoose.Schema({
   email: {
@@ -15,4 +21,8 @@ const userSchema = new mongoose.Schema({
 // creating the model class with userSchema
 const User = mongoose.model("User", userSchema);
 
-export { User };
+const buildUser = (attrs: UserAttrs) => {
+  return new User(attrs);
+};
+
+export { User, buildUser };
