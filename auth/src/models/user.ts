@@ -18,11 +18,16 @@ const userSchema = new mongoose.Schema({
   },
 });
 
+// this is how we create a function with mongoose to work with schema
+userSchema.statics.build = (attrs: UserAttrs) => {
+  return new User(attrs);
+};
+
 // creating the model class with userSchema
 const User = mongoose.model("User", userSchema);
 
-const buildUser = (attrs: UserAttrs) => {
-  return new User(attrs);
-};
+// const buildUser = (attrs: UserAttrs) => {
+//   return new User(attrs);
+// };
 
 export { User, buildUser };
