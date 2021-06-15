@@ -31,6 +31,7 @@ router.post(
 
     // if the user exist, return with the error otherwise create the user in the database
     if (existingUser) {
+      // need to check the error
       // console.log("Email in use");
       // res.send({});
       throw new BadRequestError("Email already in use");
