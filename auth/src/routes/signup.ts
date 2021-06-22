@@ -1,5 +1,6 @@
 import express, { Request, Response } from "express";
 import { body, validationResult } from "express-validator";
+import { validateRequest } from "../middlewares/validate-request";
 import { RequestValidationError } from "../errors/request-validation-error";
 import { BadRequestError } from "../errors/bad-request-error";
 import { User } from "../models/user";
@@ -18,15 +19,8 @@ router.post(
       .isLength({ min: 4, max: 20 })
       .withMessage("Password must be between 4 and 20 characters long!"),
   ],
+  validateRequest,
   async (req: Request, res: Response) => {
-    // checking the errors within the request - object
-    const errors = validationResult(req);
-    // if there exist some errors, we send the array of errors back to the requester
-    if (!errors.isEmpty()) {
-      // throwing a request validation error
-      throw new RequestValidationError(errors.array());
-    }
-
     const { email, password } = req.body;
     const existingUser = await User.findOne({ email });
 

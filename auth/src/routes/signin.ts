@@ -1,6 +1,7 @@
 import express, { Request, Response } from "express";
 import { body, validationResult } from "express-validator";
 import { RequestValidationError } from "../errors/request-validation-error";
+import { validateRequest } from "../middlewares/validate-request";
 
 const router = express.Router();
 
@@ -11,20 +12,11 @@ router.post(
     body("email").isEmail().withMessage("Email must be valid!"),
     body("password")
       .trim()
-      .isEmpty()
+      .notEmpty()
       .withMessage("Password must not be empty! You must enter a pasword!"),
   ],
-  (req: Request, res: Response) => {
-    // checking the errors within the request - object
-    const errors = validationResult(req);
-    // if there exist some errors, we send the array of errors back to the requester
-    if (!errors.isEmpty()) {
-      // throwing a request validation error
-      throw new RequestValidationError(errors.array());
-    }
-
-    res.send("Hi there!");
-  }
+  validateRequest,
+  (req: Request, res: Response) => {}
 );
 
 export { router as signInRouter };
