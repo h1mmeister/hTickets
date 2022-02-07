@@ -1,27 +1,13 @@
-import mongoose, { mongo } from "mongoose";
-import { app } from "./app";
+import express from "express";
+import { json } from "body-parser";
 
-// connecting to mongodb using clusterIP as it is present in another pod
-const start = async () => {
-  // checking if jwt_key is defined or not
-  if (!process.env.JWT_KEY) {
-    throw new Error("JWT_KEY must be defined!");
-  }
+const app = express();
+app.use(json());
 
-  try {
-    await mongoose.connect("mongodb://auth-mongo-srv:27017/auth", {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-      useCreateIndex: true,
-    });
-    // console.log("Connected to MongoDB!");
-  } catch (err) {
-    console.log(err);
-  }
+app.get("/api/users/currentuser", (req, res) => {
+  res.send("Hi there!");
+});
 
-  app.listen(3000, () => {
-    console.log("Listening on port 3000!!");
-  });
-};
-
-start();
+app.listen(3000, () => {
+  console.log("Listening on port 3000!");
+});
