@@ -20,7 +20,8 @@ router.post(
 
     // handling those errors by sending back the response
     if (!errors.isEmpty()) {
-      return res.status(400).send(errors.array());
+      // return res.status(400).send(errors.array());
+      throw new Error('Invalid email or password!');
     }
     console.log('Creating a user...');
     res.send({});
