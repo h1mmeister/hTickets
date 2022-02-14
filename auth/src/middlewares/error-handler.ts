@@ -14,12 +14,12 @@ export const errorHandler = (
     //   return { message: error.msg, field: error.param };
     // });
     return res.status(err.statusCode).send({
-      errors: err.serializeErrors,
+      errors: err.serializeErrors(),
     });
   }
   if (err instanceof DatabaseConnectionError) {
     return res.status(err.statusCode).send({
-      errors: err.serializeErrors,
+      errors: err.serializeErrors(),
     });
   }
 
