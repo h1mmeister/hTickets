@@ -9,9 +9,6 @@ export const errorHandler = (
   next: NextFunction
 ) => {
   if (err instanceof CustomError) {
-    // const formattedErrors = err.errors.map((error) => {
-    //   return { message: error.msg, field: error.param };
-    // });
     return res.status(err.statusCode).send({
       errors: err.serializeErrors(),
     });
