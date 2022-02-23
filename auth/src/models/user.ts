@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import { Password } from '../services/password';
 
 // an interface that describes the properties required to create a new user
 interface UserAttrs {
@@ -27,6 +28,15 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+});
+
+// this method will help us in storing the password in hashed form when saving the user in the db.
+userSchema.pre('save', async function (done) {
+  if (this.isModified('password')) {
+    const hashedPassword = Password.toHash(this.get('password'));
+    this.set('password', hashedPassword);
+  }
+  done();
 });
 
 // this will help us in getting a method on userSchema and we do not have to export User and buildUser separately
