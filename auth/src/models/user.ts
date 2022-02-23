@@ -33,7 +33,7 @@ const userSchema = new mongoose.Schema({
 // this method will help us in storing the password in hashed form when saving the user in the db.
 userSchema.pre('save', async function (done) {
   if (this.isModified('password')) {
-    const hashedPassword = Password.toHash(this.get('password'));
+    const hashedPassword = await Password.toHash(this.get('password'));
     this.set('password', hashedPassword);
   }
   done();
