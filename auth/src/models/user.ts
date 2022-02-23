@@ -7,8 +7,14 @@ interface UserAttrs {
 }
 
 // an interface that describes the properties that a user model has
-interface UserModel extends mongoose.Model<any> {
-  build(attrs: UserAttrs): any;
+interface UserModel extends mongoose.Model<UserDoc> {
+  build(attrs: UserAttrs): UserDoc;
+}
+
+// an interface that describes the properties that a user document has
+interface UserDoc extends mongoose.Document {
+  email: string;
+  password: string;
 }
 
 // here we are creating the schema for the model
@@ -29,7 +35,7 @@ userSchema.statics.build = (attrs: UserAttrs) => {
 };
 
 // creating the model to add documents with respect to the schema
-const User = mongoose.model<any, UserModel>('User', userSchema);
+const User = mongoose.model<UserDoc, UserModel>('User', userSchema);
 
 // we will not directly call new User with email and password as we will not be able to check the types
 // as well as any typos. Instead, we will use this function to create the user that actually takes attrs of interface type
