@@ -1,8 +1,8 @@
 import express, { Request, Response } from 'express';
 import { body, validationResult } from 'express-validator';
+import { User } from '../models/user';
 
 import { RequestValidationError } from '../errors/request-validation-error';
-import { DatabaseConnectionError } from '../errors/database-connection-error';
 
 // creating a router
 const router = express.Router();
@@ -27,10 +27,24 @@ router.post(
       // throw new Error('Invalid email or password!');
       throw new RequestValidationError(errors.array());
     }
-    console.log('Creating a user...');
-    throw new DatabaseConnectionError();
 
-    res.send({});
+    // we are taking out the email and password from the req body
+    const { email, password } = req.body;
+
+    // we are checking if the email elready exists in the database
+    const existingUser = await User.findOne({ email });
+
+    // if the email exists, we would simply return
+    if (existingUser) {
+      console.log('Email already in use!');
+      return res.send({});
+    }
+
+    // otherwise, we will create and save the user in the database
+    const user = User.build({ email, password });
+    await user.save();
+
+    res.status(201).send(user);
   }
 );
 
