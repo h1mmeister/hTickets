@@ -3,6 +3,7 @@ import { body, validationResult } from 'express-validator';
 import { User } from '../models/user';
 
 import { RequestValidationError } from '../errors/request-validation-error';
+import { BadRequestError } from '../errors/bad-request-error';
 
 // creating a router
 const router = express.Router();
@@ -36,8 +37,7 @@ router.post(
 
     // if the email exists, we would simply return
     if (existingUser) {
-      console.log('Email already in use!');
-      return res.send({});
+      throw new BadRequestError('Email already in use!');
     }
 
     // otherwise, we will create and save the user in the database
